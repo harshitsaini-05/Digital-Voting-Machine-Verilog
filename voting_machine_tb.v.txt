@@ -1,0 +1,162 @@
+`timescale 1ns/1ps
+
+module voting_machine_tb;
+
+reg clk;
+reg reset;
+
+reg vote1;
+reg vote2;
+reg vote3;
+reg vote4;
+
+reg result;
+
+wire [7:0] candidate1;
+wire [7:0] candidate2;
+wire [7:0] candidate3;
+wire [7:0] candidate4;
+
+////////////////////////////////////////////////////////////
+// Instantiate DUT
+////////////////////////////////////////////////////////////
+
+digital_voting_machine DUT(
+
+    .clk(clk),
+    .reset(reset),
+
+    .vote1(vote1),
+    .vote2(vote2),
+    .vote3(vote3),
+    .vote4(vote4),
+
+    .result(result),
+
+    .candidate1(candidate1),
+    .candidate2(candidate2),
+    .candidate3(candidate3),
+    .candidate4(candidate4)
+
+);
+
+////////////////////////////////////////////////////////////
+// Clock Generation
+////////////////////////////////////////////////////////////
+
+always #5 clk = ~clk;
+
+////////////////////////////////////////////////////////////
+// Test Sequence
+////////////////////////////////////////////////////////////
+
+initial
+begin
+
+    clk = 0;
+
+    reset = 1;
+
+    vote1 = 0;
+    vote2 = 0;
+    vote3 = 0;
+    vote4 = 0;
+
+    result = 0;
+
+    #20;
+    reset = 0;
+
+    //////////////////////////////
+    // Voting Starts
+    //////////////////////////////
+
+    // Candidate 1 Vote
+    #10;
+    vote1 = 1;
+    #10;
+    vote1 = 0;
+
+    // Candidate 2 Vote
+    #10;
+    vote2 = 1;
+    #10;
+    vote2 = 0;
+
+    // Candidate 3 Vote
+    #10;
+    vote3 = 1;
+    #10;
+    vote3 = 0;
+
+    // Candidate 1 Vote
+    #10;
+    vote1 = 1;
+    #10;
+    vote1 = 0;
+
+    // Candidate 4 Vote
+    #10;
+    vote4 = 1;
+    #10;
+    vote4 = 0;
+
+    // Candidate 2 Vote
+    #10;
+    vote2 = 1;
+    #10;
+    vote2 = 0;
+
+    //////////////////////////////
+    // Show Result
+    //////////////////////////////
+
+    #20;
+    result = 1;
+
+    #20;
+
+    $display("---------------------------------------");
+    $display("FINAL RESULT");
+    $display("---------------------------------------");
+    $display("Candidate 1 = %0d",candidate1);
+    $display("Candidate 2 = %0d",candidate2);
+    $display("Candidate 3 = %0d",candidate3);
+    $display("Candidate 4 = %0d",candidate4);
+    $display("---------------------------------------");
+
+    #20;
+
+    $finish;
+
+end
+
+////////////////////////////////////////////////////////////
+// Monitor
+////////////////////////////////////////////////////////////
+
+initial
+begin
+
+$monitor("Time=%0t C1=%0d C2=%0d C3=%0d C4=%0d",
+$time,
+candidate1,
+candidate2,
+candidate3,
+candidate4);
+
+end
+
+////////////////////////////////////////////////////////////
+// Waveform
+////////////////////////////////////////////////////////////
+
+initial
+begin
+
+$dumpfile("VotingMachine.vcd");
+$dumpvars(0,voting_machine_tb);
+
+end
+
+endmodule
