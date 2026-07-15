@@ -69,7 +69,7 @@ The design was successfully simulated using EDA Playground. The voting machine c
 
 ## Simulation Waveform
 
-![Waveform](waveform.png)
+![Waveform](Screenshot%202026-07-15%20084342.png)
 
 ---
 
