@@ -75,6 +75,6 @@ The design was successfully simulated using EDA Playground. The voting machine c
 
 ## Author
 
-**Harshit S**
+**Harshit Saini*
 
 Internship Project - Codec Technologies
